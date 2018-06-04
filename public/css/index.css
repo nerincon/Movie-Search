@@ -1,0 +1,18 @@
+body {
+    background-color: black;
+}
+
+
+#movieInfo img , #movie img {
+    width:100%;
+
+}
+
+#movieInfo .well {
+    height: 400px;
+
+}
+
+#movieInfo .well img {
+    height: 240px;
+}
