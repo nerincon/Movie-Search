@@ -1,10 +1,32 @@
+var api_key = 'afdbde1b23986061250c4e55fd79a7d2';
+
+function movieSelected(id) {
+    console.log('getting movieSelected function');
+    sessionStorage.setItem('movieId', id);
+    window.location = 'movie';
+    return false;
+}
+
+function getMovie(id){
+    var movieId = sessionStorage.getItem('movieId');
+    var api_url = 'https://api.themoviedb.org/3/movie/'+movieId+'?api_key='+api_key;
+    console.log('particularmovieid: '+ movieId);
+    console.log('particularmovieurl: '+ api_url);
+    axios.get(api_url)
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
 $(document).ready(() => {
     console.log('separate js file working')
     // sessionStorage.setItem('dude', 'Nelson Rincon');
     // let val = sessionStorage.getItem('dude');
     // console.log(val);
     // var api_url = '/api';
-    var api_key = 'afdbde1b23986061250c4e55fd79a7d2';
 
     $('#myForm').submit((evt) => {
         var searchText = $('#search').val();
@@ -27,7 +49,7 @@ $(document).ready(() => {
                         <div class="well center-align">
                             <img src="${img}">
                             <h6>${movie.title}</h6>
-                            <a onclick= "movieSelected('${id}')" class="btn" href="#">Movie Deatils</a>
+                            <a onclick="movieSelected('${id}');" class="btn" href="#">Movie Details</a>
                         </div>
                     </div>
                     
@@ -38,26 +60,6 @@ $(document).ready(() => {
             .catch((error) => {
                 console.error(error);
             });
-
-    function movieSelected(id){
-        console.log('getting movieSelected function');
-        sessionStorage.setItem('movieId', id);
-        window.location = 'movie.html';
-        return false;
-    }
-
-    function getMovie(id){
-        var api_url = 'https://api.themoviedb.org/3/movie/'+id+'?api_key='+api_key;
-        console.log('particularmovieid: '+ id);
-        console.log('particularmovieurl: '+ api_url);
-        axios.get(api_url)
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
 
     }
 });
