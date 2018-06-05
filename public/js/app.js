@@ -15,6 +15,39 @@ function getMovie(id){
     axios.get(api_url)
         .then((res) => {
             console.log(res);
+            var poster = res.data.backdrop_path;
+            var img = "https://image.tmdb.org/t/p/w500"+poster;
+            var movie = res.data;
+
+            var output = `
+                <div class='row'>
+                    <div class='col m8 materialboxed'>
+                        <img src="${img}" width="950">
+                    </div>
+                    <div class='col m4'>
+                        <h2>${movie.title}</h2>
+                        <ul class="collection">
+                        <li class"collection-item"><strong>Genre:</strong>  ${movie.genres[0].name}</li>
+                        <li class"collection-item"><strong>Second Genre:</strong>  ${movie.genres[1].name}</li>
+                        <li class"collection-item"><strong>Released:</strong>  ${movie.release_date}</li>
+                        <li class"collection-item"><strong>Runtime:</strong>  ${movie.runtime} minutes</li>
+                        <li class"collection-item"><strong>Budget:</strong>  ${Number(movie.budget)}</li>
+                        <li class"collection-item"><strong>Revenue:</strong>  ${movie.revenue}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class="well">
+                        <h3>Plot</h3>
+                        ${movie.overview}
+                        <hr>
+                        <a href="http://imdb.com/title/${movie.imdb_id}" target="_blank" class="btn">View IMDB</a>
+                        <a href="/" class="btn">Go Back to Search</a>
+                    </div>
+                </div>
+            `;
+
+            $('#movie').html(output);
         })
         .catch((error) => {
             console.error(error);

@@ -1,7 +1,11 @@
 body {
+    color: white;
     background-color: black;
 }
 
+#search {
+    color:black;
+}
 
 #movieInfo img , #movie img {
     width:100%;
