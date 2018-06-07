@@ -59,14 +59,16 @@ app.get('/movie', function (req, res) {
 //         }
 //     };
 
-//     axios.get(api_url, config)
-//         .then(function (r) {
-//             console.log('sending back data')
-//             console.log(r)
-//             res.json(r.data.results[0].title);
-//         })
-//         .catch(next);
-//     });
+    // axios.get(api_url, config)
+    //     .then(function (r) {
+    //         console.log('sending back data')
+    //         console.log(r)
+    //         var data = r.data
+    
+    //         res.json({title: r.data.title, temp: r.data.temp});
+    //     })
+    //     .catch(next);
+    // });
 
 
 
