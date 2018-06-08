@@ -1,5 +1,62 @@
 var api_key = 'afdbde1b23986061250c4e55fd79a7d2';
 
+
+var submitButton = document.getElementById("go")
+submitButton.addEventListener('click', function(e){
+    var myForm = document.getElementById("myForm")
+    var searchString = myForm.search.value
+    grabDataFromServer(searchString)
+    e.preventDefault()
+})
+
+function grabDataFromServer(searchString){
+    var api_url = "/api";
+    axios({
+        method: 'post',
+        url: api_url,
+        data: {
+            searchString: searchString
+        }   
+        }).then(function(response){ console.log(response)
+    
+        getAllMoviesVariable(response)
+    })
+
+}
+
+function getAllMoviesVariable(res) {
+    console.log('Data coming from server')
+    console.log(res.data)
+    var movies = res.data;
+    var searchedMovies = buildAllMoviesHTML(movies);
+    appendAllMovies(searchedMovies);
+}
+
+function buildAllMoviesHTML(movies){
+    var output = ''
+    $.each(movies, (index, movie) => {
+        var poster = movie.poster_path;
+        var img = "https://image.tmdb.org/t/p/w200"+poster;
+        var id = movie.id;
+        output += `
+        <div class="col m3">
+            <div class="well center-align">
+                <img src="${img}">
+                <h6>${movie.title}</h6>
+                <a onclick="movieSelected('${movie.id}');" class="btn" href="#">Movie Details</a>
+            </div>
+        </div>
+        
+        `;
+    })
+    return output;
+}
+
+
+function appendAllMovies(movies){
+    $('#movieInfo').html(movies)
+}
+
 function movieSelected(id) {
     console.log('getting movieSelected function');
     sessionStorage.setItem('movieId', id);
@@ -69,78 +126,3 @@ function buildMovieHTML({title: title, poster:poster, img:img, genre:genre, seco
 function appendOneMovie(movie){
     $('#movie').html(movie);
 }
-
-$(document).ready(() => {
-    console.log('separate js file working')
-    // sessionStorage.setItem('dude', 'Nelson Rincon');
-    // let val = sessionStorage.getItem('dude');
-    // console.log(val);
-    // var api_url = '/api';
-
-    $('#myForm').submit((evt) => {
-        evt.preventDefault();
-        var searchText = $('#search').val();
-        console.log(searchText);
-        getAllSearchedMovies(searchText);
-    });
-
-    function getAllSearchedMovies(searchText){
-        var api_url = 'https://api.themoviedb.org/3/search/movie?api_key='+api_key+'&query='+searchText;
-        axios.get(api_url)
-            .then(getAllMoviesVariable)
-            .catch(console.error)
-        }
-
-
-    function getAllMoviesVariable(res) {
-        var movies = res.data.results;
-        var searchedMovies = buildAllMoviesHTML(movies);
-        appendAllMovies(searchedMovies);
-    }
-
-    function buildAllMoviesHTML(movies){
-        var output = ''
-        $.each(movies, (index, movie) => {
-            var poster = movie.poster_path;
-            var img = "https://image.tmdb.org/t/p/w200"+poster;
-            var id = movie.id;
-            output += `
-            <div class="col m3">
-                <div class="well center-align">
-                    <img src="${img}">
-                    <h6>${movie.title}</h6>
-                    <a onclick="movieSelected('${movie.id}');" class="btn" href="#">Movie Details</a>
-                </div>
-            </div>
-            
-            `;
-        })
-        return output;
-    }
-});
-
-function appendAllMovies(movies){
-    $('#movieInfo').html(movies)
-}
-
-
-
-
-
-
-
-// .then((res) => {
-//     var movies = res.data.results;
-//     getMoviesData(movies);
-// })
-
-// .then(function (res) {
-//     var movies = res.data.results
-//     getMoviesData(movies)
-// })
-
-// .then(callback)
-
-// function callback (res) {
-//     // ...
-// }
