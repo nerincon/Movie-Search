@@ -1,44 +1,43 @@
-var api_key = 'afdbde1b23986061250c4e55fd79a7d2';
+var api_key = 'afdbde1b23986061250c4e55fd79a7d2'
 
-
-var submitButton = document.getElementById("go")
-submitButton.addEventListener('click', function(e){
-    var myForm = document.getElementById("myForm")
-    var searchString = myForm.search.value
-    grabDataFromServer(searchString)
-    e.preventDefault()
+var submitButton = document.getElementById('go')
+submitButton.addEventListener('click', function (e) {
+  var myForm = document.getElementById('myForm')
+  var searchString = myForm.search.value
+  grabDataFromServer(searchString)
+  e.preventDefault()
 })
 
-function grabDataFromServer(searchString){
-    var api_url = "/api";
-    axios({
-        method: 'post',
-        url: api_url,
-        data: {
-            searchString: searchString
-        }   
-        }).then(function(response){ console.log(response)
-    
-        getAllMoviesVariable(response)
-    })
+function grabDataFromServer (searchString) {
+  var api_url = '/api'
+  axios({
+    method: 'post',
+    url: api_url,
+    data: {
+      searchString: searchString
+    }
+  }).then(function (response) {
+    console.log(response)
 
+    getAllMoviesVariable(response)
+  })
 }
 
-function getAllMoviesVariable(res) {
-    console.log('Data coming from server')
-    console.log(res.data)
-    var movies = res.data;
-    var searchedMovies = buildAllMoviesHTML(movies);
-    appendAllMovies(searchedMovies);
+function getAllMoviesVariable (res) {
+  console.log('Data coming from server')
+  console.log(res.data)
+  var movies = res.data
+  var searchedMovies = buildAllMoviesHTML(movies)
+  appendAllMovies(searchedMovies)
 }
 
-function buildAllMoviesHTML(movies){
-    var output = ''
-    $.each(movies, (index, movie) => {
-        var poster = movie.poster_path;
-        var img = "https://image.tmdb.org/t/p/w200"+poster;
-        var id = movie.id;
-        output += `
+function buildAllMoviesHTML (movies) {
+  var output = ''
+  $.each(movies, (index, movie) => {
+    var poster = movie.poster_path
+    var img = 'https://image.tmdb.org/t/p/w200' + poster
+    var id = movie.id
+    output += `
         <div class="col m3">
             <div class="well center-align">
                 <img src="${img}">
@@ -47,53 +46,50 @@ function buildAllMoviesHTML(movies){
             </div>
         </div>
         
-        `;
-    })
-    return output;
+        `
+  })
+  return output
 }
 
-
-function appendAllMovies(movies){
-    $('#movieInfo').html(movies)
+function appendAllMovies (movies) {
+  $('#movieInfo').html(movies)
 }
 
-function movieSelected(id) {
-    console.log('getting movieSelected function');
-    sessionStorage.setItem('movieId', id);
-    window.location = 'movie';
-    return false;
+function movieSelected (id) {
+  console.log('getting movieSelected function')
+  sessionStorage.setItem('movieId', id)
+  window.location = 'movie'
+  return false
 }
 
-function fetchAPIOneMovie(id){
-    var movieId = sessionStorage.getItem('movieId');
-    var api_url = 'https://api.themoviedb.org/3/movie/'+movieId+'?api_key='+api_key;
-    console.log('particularmovieid: '+ movieId);
-    console.log('particularmovieurl: '+ api_url);
-    axios.get(api_url)
-         .then(getMovieVariables)
-         .catch(console.error)
-    }
+function fetchAPIOneMovie (id) {
+  var movieId = sessionStorage.getItem('movieId')
+  var api_url = 'https://api.themoviedb.org/3/movie/' + movieId + '?api_key=' + api_key
+  console.log('particularmovieid: ' + movieId)
+  console.log('particularmovieurl: ' + api_url)
+  axios.get(api_url)
+    .then(getMovieVariables)
+    .catch(console.error)
+}
 
 function getMovieVariables (res) {
-    var title = res.data.title;
-    var poster = res.data.backdrop_path;
-    var img = "https://image.tmdb.org/t/p/w500"+poster;
-    var genre = res.data.genres[0].name;
-    var second_genre = res.data.genres[1].name;
-    var released = res.data.release_date;
-    var runtime = res.data.runtime;
-    var budget = res.data.budget;
-    var revenue = res.data.revenue;
-    var overview = res.data.overview;
-    var imdb_id = res.data.imdb_id;
-    var generatedMovie = buildMovieHTML({title: title, poster:poster, img:img, genre:genre, second_genre:second_genre, released:released, runtime:runtime, budget:budget, revenue:revenue, overview:overview, imdb_id:imdb_id});
-    appendOneMovie(generatedMovie)
-
+  var title = res.data.title
+  var poster = res.data.backdrop_path
+  var img = 'https://image.tmdb.org/t/p/w500' + poster
+  var genre = res.data.genres[0].name
+  var second_genre = res.data.genres[1].name
+  var released = res.data.release_date
+  var runtime = res.data.runtime
+  var budget = res.data.budget
+  var revenue = res.data.revenue
+  var overview = res.data.overview
+  var imdb_id = res.data.imdb_id
+  var generatedMovie = buildMovieHTML({title: title, poster: poster, img: img, genre: genre, second_genre: second_genre, released: released, runtime: runtime, budget: budget, revenue: revenue, overview: overview, imdb_id: imdb_id})
+  appendOneMovie(generatedMovie)
 }
 
-
-function buildMovieHTML({title: title, poster:poster, img:img, genre:genre, second_genre:second_genre, released:released, runtime:runtime, budget:budget, revenue:revenue, overview:overview, imdb_id:imdb_id}) {
-            var output = `
+function buildMovieHTML ({title, poster, img, genre, second_genre, released, runtime, budget, revenue, overview, imdb_id}) {
+  var output = `
                 <div class='row'>
                     <div class='col m8 materialboxed'>
                         <img src="${img}" width="950">
@@ -119,10 +115,10 @@ function buildMovieHTML({title: title, poster:poster, img:img, genre:genre, seco
                         <a href="/" class="btn">Go Back to Search</a>
                     </div>
                 </div>
-            `;
-            return output;
+            `
+  return output
 }
 
-function appendOneMovie(movie){
-    $('#movie').html(movie);
+function appendOneMovie (movie) {
+  $('#movie').html(movie)
 }
