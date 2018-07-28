@@ -4,7 +4,7 @@
   "description": "Movie search API using JS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/standard test/test.js && ./node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -18,10 +18,12 @@
   "homepage": "https://github.com/nerincon/Movie-Search#readme",
   "dependencies": {
     "apicache": "^1.2.1",
+    "assert": "^1.4.1",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
+    "fs-plus": "^3.0.2",
     "nodemon": "^1.17.5",
     "nunjucks": "^3.1.3"
   }
